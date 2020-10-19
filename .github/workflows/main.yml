@@ -17,7 +17,7 @@ jobs:
              VERBOSE_TESTS: true,
              TARGET_CMAKE_ARGS: "-DRCT_BUILD_TESTS=ON",
              CTEST_OUTPUT_ON_FAILURE: true,
-             UPSTREAM_WORKSPACE: 'github:jmeyer1292/robot_cal_tools#master -robot_cal_tools/robot_cal_tools -robot_cal_tools/rct_ros_tools -robot_cal_tools/rct_examples',
+             UPSTREAM_WORKSPACE: 'github:schornakj/robot_cal_tools#fix/boost-dependency -robot_cal_tools/robot_cal_tools -robot_cal_tools/rct_ros_tools -robot_cal_tools/rct_examples',
              AFTER_SCRIPT: 'cd $target_ws/build/rct_optimizations && ctest -V && cd $target_ws/build/rct_image_tools && ctest -V'}
           - {BADGE: bionic,
              OS_NAME: ubuntu,
@@ -28,7 +28,7 @@ jobs:
              VERBOSE_TESTS: true,
              TARGET_CMAKE_ARGS: "-DRCT_BUILD_TESTS=ON",
              CTEST_OUTPUT_ON_FAILURE: true,
-             UPSTREAM_WORKSPACE: 'github:jmeyer1292/robot_cal_tools#master -robot_cal_tools/robot_cal_tools -robot_cal_tools/rct_ros_tools -robot_cal_tools/rct_examples',
+             UPSTREAM_WORKSPACE: 'github:schornakj/robot_cal_tools#fix/boost-dependency -robot_cal_tools/robot_cal_tools -robot_cal_tools/rct_ros_tools -robot_cal_tools/rct_examples',
              AFTER_SCRIPT: 'cd $target_ws/build/rct_optimizations && ctest -V && cd $target_ws/build/rct_image_tools && ctest -V'}
     runs-on: ubuntu-latest
     steps:
