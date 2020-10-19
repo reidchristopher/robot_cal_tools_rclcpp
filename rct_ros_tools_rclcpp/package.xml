@@ -13,8 +13,12 @@
 
   <depend>cv_bridge</depend>
   <depend>image_transport</depend>
-  <depend>rct_image_tools</depend>
   <depend>rclcpp</depend>
+  <depend>rct_image_tools</depend>
+  <depend>rct_optimizations</depend>
+  <depend>std_srvs</depend>
+  <depend>tf2_eigen</depend>
+  <depend>tf2_geometry_msgs</depend>
   <depend>tf2_ros</depend>
 
   <export>
