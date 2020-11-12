@@ -15,7 +15,7 @@ find_package(rclcpp REQUIRED)
 
 find_package(rct_image_tools REQUIRED)
 find_package(rct_optimizations REQUIRED)
-find_package(OpenCV 3 REQUIRED COMPONENTS features2d core calib3d)
+find_package(OpenCV REQUIRED COMPONENTS features2d core calib3d)
 
 message(WARNING ${OpenCV_VERSION})
 message(WARNING ${OpenCV_LIBS})

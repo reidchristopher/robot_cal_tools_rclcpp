@@ -1,0 +1,37 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  industrial_ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        env:
+          - {BADGE: focal,
+             OS_NAME: ubuntu,
+             OS_CODE_NAME: focal,
+             ROS_DISTRO: foxy,
+             ROS_REPO: main,
+             ADDITIONAL_DEBS: git,
+             VERBOSE_TESTS: true,
+             TARGET_CMAKE_ARGS: "-DRCT_BUILD_TESTS=ON",
+             CTEST_OUTPUT_ON_FAILURE: true,
+             UPSTREAM_WORKSPACE: 'github:schornakj/robot_cal_tools#fix/boost-dependency -robot_cal_tools/robot_cal_tools -robot_cal_tools/rct_ros_tools -robot_cal_tools/rct_examples',
+             }
+          - {BADGE: bionic,
+             OS_NAME: ubuntu,
+             OS_CODE_NAME: bionic,
+             ROS_DISTRO: eloquent,
+             ROS_REPO: main,
+             ADDITIONAL_DEBS: git,
+             VERBOSE_TESTS: true,
+             TARGET_CMAKE_ARGS: "-DRCT_BUILD_TESTS=ON",
+             CTEST_OUTPUT_ON_FAILURE: true,
+             UPSTREAM_WORKSPACE: 'github:schornakj/robot_cal_tools#fix/boost-dependency -robot_cal_tools/robot_cal_tools -robot_cal_tools/rct_ros_tools -robot_cal_tools/rct_examples',
+             }
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: 'ros-industrial/industrial_ci@master'
+        env: ${{matrix.env}}

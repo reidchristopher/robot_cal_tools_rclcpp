@@ -13,9 +13,6 @@
 
 #include <std_srvs/srv/empty.hpp>
 
-#include <rct_image_tools/image_observation_finder.h>
-
-
 #include <vector>
 
 class DataCollection : public rclcpp::Node
