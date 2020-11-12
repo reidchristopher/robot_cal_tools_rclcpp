@@ -15,7 +15,6 @@
 
 #include <rct_image_tools/image_observation_finder.h>
 
-#include <rct_image_tools/modified_circle_grid_target.h>
 
 #include <vector>
 
@@ -27,7 +26,6 @@ public:
     , clock_(std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME))
     , buffer_(clock_)
     , listener_(buffer_)
-    , finder_(rct_image_tools::ModifiedCircleGridTarget(5, 5, 0.01))
   {
     this->declare_parameter("base_frame");
     this->declare_parameter("tool_frame");
@@ -159,8 +157,6 @@ private:
   std::shared_ptr<rclcpp::Clock> clock_;
   tf2_ros::Buffer buffer_;
   tf2_ros::TransformListener listener_;
-
-  rct_image_tools::ModifiedCircleGridObservationFinder finder_;
 
   cv_bridge::CvImagePtr last_frame_;
 
