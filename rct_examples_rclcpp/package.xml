@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rct_examples_rclcpp</name>
+  <version>0.1.0</version>
+  <description>The rct_examples_rclcpp package</description>
+
+  <maintainer email="tylermarr17@gmail.com">Tyler Marr</maintainer>
+  <author email="jmeyer1292@gmail.com">Jonathan Meyer</author>
+
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rct_image_tools</depend>
+  <depend>rct_optimizations</depend>
+  <depend>rct_ros_tools_rclcpp</depend>
+  <depend>rct_common</depend>
+  <depend>rclcpp</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

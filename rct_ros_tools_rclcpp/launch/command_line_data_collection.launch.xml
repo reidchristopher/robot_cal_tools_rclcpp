@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+  <!--  TF transform lookup parameters-->
+  <arg name="base_frame" default="base_link"/>
+  <arg name="tool_frame" default="tool0"/>
+
+  <!-- Image topic parameters -->
+  <arg name="image_topic" default="camera"/>
+
+  <!--The save directory-->
+  <arg name="save_dir" default="/tmp/calibration_data"/>
+
+  <node pkg="rct_ros_tools_rclcpp" exec="command_line_data_collection">
+    <param name="base_frame" value="$(var base_frame)"/>
+    <param name="tool_frame" value="$(var tool_frame)"/>
+    <param name="image_topic" value="$(var image_topic)"/>
+    <param name="save_dir" value="$(var save_dir)"/>
+  </node>
+</launch>

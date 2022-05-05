@@ -13,8 +13,8 @@ namespace rct_ros_tools
 
 bool loadIntrinsics(const rclcpp::SyncParametersClient::SharedPtr& pc, const std::string& key, rct_optimizations::CameraIntrinsics& intr);
 
-bool loadPose(const rclcpp::SyncParametersClient::SharedPtr& pc, const std::string& key, Eigen::Affine3d& pose);
-bool loadPose(const std::string& path, Eigen::Affine3d& pose);
+bool loadPose(const rclcpp::SyncParametersClient::SharedPtr& pc, const std::string& key, Eigen::Isometry3d& pose);
+bool loadPose(const std::string& path, Eigen::Isometry3d& pose);
 
 }
 

@@ -14,10 +14,12 @@ namespace rct_ros_tools
 struct ExtrinsicDataSet
 {
   std::vector<cv::Mat> images;
-  std::vector<Eigen::Affine3d> tool_poses;
+  std::vector<Eigen::Isometry3d> tool_poses;
 };
 
 boost::optional<ExtrinsicDataSet> parseFromFile(const std::string& path);
+
+cv::Mat readImageOpenCV(const std::string& path);
 
 bool saveToDirectory(const std::string& path, const ExtrinsicDataSet& data);
 

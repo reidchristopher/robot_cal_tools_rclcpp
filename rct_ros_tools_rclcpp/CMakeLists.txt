@@ -105,40 +105,37 @@ target_link_libraries(${PROJECT_NAME}_cmd
  ${image_transport_LIBRARIES}
 )
 
+add_executable(${PROJECT_NAME}_wrist_cal_node  src/camera_on_wrist_node.cpp)
+
+set_target_properties(${PROJECT_NAME}_wrist_cal_node PROPERTIES OUTPUT_NAME wrist_cal_node PREFIX "")
+
+target_include_directories(${PROJECT_NAME}_wrist_cal_node PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include>"
+  ${rclcpp_INCLUDE_DIRS}
+)
+
+target_link_libraries(${PROJECT_NAME}_wrist_cal_node
+ ${PROJECT_NAME}_data_loader
+ rct::rct_image_tools
+ rct::rct_optimizations
+ rct::rct_common
+ ament_index_cpp::ament_index_cpp
+)
+
 ament_export_include_directories(
     include
-#    ${rct_image_tools_INCLUDE_DIRS}
-#    ${rclcpp_INCLUDE_DIRS}
-#    ${std_srvs_INCLUDE_DIRS}
-#    ${tf2_ros_INCLUDE_DIRS}
-#    ${tf2_eigen_INCLUDE_DIRS}
-#    ${cv_bridge_INCLUDE_DIRS}
-#    ${OpenCV_INCLUDE_DIRS}
-#    ${image_transport_INCLUDE_DIRS}
-#    ${rct_image_tools_INCLUDE_DIRS}
     )
 
 ament_export_libraries(
     yaml-cpp
     ${PROJECT_NAME}_data_loader
-#    ${OpenCV_LIBS}
-#    ${rclcpp_LIBRARIES}
-#    ${std_srvs_LIBRARIES}
-#    ${tf2_ros_LIBRARIES}
-#    ${tf2_eigen_LIBRARIES}
-#    ${cv_bridge_LIBRARIES}
-#    ${image_transport_LIBRARIES}
-#    ${rct_image_tools_LIBRARIES}
     )
 
 ament_export_dependencies(
     rclcpp)
 
 ament_package()
-
-#############
-## Testing ##
-#############
 
 #############
 ## Install ##
@@ -160,9 +157,18 @@ install(TARGETS ${PROJECT_NAME}_cmd EXPORT ${PROJECT_NAME}_cmd
   RUNTIME DESTINATION ${ROS_BIN_DESTINATION}
 )
 
+install(TARGETS ${PROJECT_NAME}_wrist_cal_node EXPORT ${PROJECT_NAME}_wrist_cal_node
+  ARCHIVE DESTINATION ${ROS_LIB_DESTINATION}
+  LIBRARY DESTINATION ${ROS_LIB_DESTINATION}
+  RUNTIME DESTINATION ${ROS_BIN_DESTINATION}
+)
+
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
+
 install(DIRECTORY include/${PROJECT_NAME}
   DESTINATION ${ROS_INCLUDE_DESTINATION}
 )
 
 install(TARGETS ${PROJECT_NAME}_cmd
+        ${PROJECT_NAME}_wrist_cal_node
         DESTINATION ${ROS_LIB_DESTINATION}/${PROJECT_NAME})

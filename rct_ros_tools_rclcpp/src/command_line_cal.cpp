@@ -104,7 +104,7 @@ private:
       cv::Mat image = images_[i];
       auto msg = poses_[i];
 
-      Eigen::Affine3d pose = tf2::transformToEigen(msg);
+      Eigen::Isometry3d pose = tf2::transformToEigen(msg);
       data.images.push_back(image);
       data.tool_poses.push_back(pose);
     }
@@ -131,9 +131,7 @@ private:
     }
     catch (const tf2::TransformException& ex)
     {
-      RCLCPP_WARN(this->get_logger(), "Failed to compute transform");
-//      ROS_WARN_STREAM("Failed to compute transfrom between " << base_frame_ << " and " << tool_frame_ << ": "
-//                      << ex.what());
+      RCLCPP_WARN_STREAM(this->get_logger(), "Failed to compute transfrom between " << base_frame_ << " and " << tool_frame_ << ": " << ex.what());
       return false;
     }
   }

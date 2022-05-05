@@ -78,9 +78,9 @@ bool rct_ros_tools::loadIntrinsics(const rclcpp::SyncParametersClient::SharedPtr
 
 
 bool rct_ros_tools::loadPose(const rclcpp::SyncParametersClient::SharedPtr& pc, const std::string& key,
-                            Eigen::Affine3d& pose)
+                            Eigen::Isometry3d& pose)
 {
-  pose = Eigen::Affine3d::Identity();
+  pose = Eigen::Isometry3d::Identity();
   double x, y, z, qx, qy, qz, qw;
 
   try
@@ -105,7 +105,7 @@ bool rct_ros_tools::loadPose(const rclcpp::SyncParametersClient::SharedPtr& pc, 
 
 
 
-bool rct_ros_tools::loadPose(const std::string& path, Eigen::Affine3d& pose)
+bool rct_ros_tools::loadPose(const std::string& path, Eigen::Isometry3d& pose)
 {
   YAML::Node n = YAML::LoadFile(path);
   Eigen::Vector3d position;
@@ -120,7 +120,7 @@ bool rct_ros_tools::loadPose(const std::string& path, Eigen::Affine3d& pose)
   qy = n["qy"].as<double>();
   qz = n["qz"].as<double>();
 
-  pose = Eigen::Affine3d::Identity();
+  pose = Eigen::Isometry3d::Identity();
   pose.translation() = position;
   pose.linear() = Eigen::Quaterniond(qw, qx, qy, qz).toRotationMatrix();
   return true;

@@ -21,7 +21,7 @@ if (!maybe_data_set)
 }
 // Now that its loaded let's create some aliases to make this nicer
 const std::vector<cv::Mat>& image_set = maybe_data_set->images;
-const std::vector<Eigen::Affine3d>& wrist_poses = maybe_data_set->tool_poses;
+const std::vector<Eigen::Isometry3d>& wrist_poses = maybe_data_set->tool_poses;
 
 // ...
 ```

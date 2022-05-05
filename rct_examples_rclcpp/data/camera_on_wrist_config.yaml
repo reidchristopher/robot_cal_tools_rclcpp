@@ -1,0 +1,48 @@
+camera_info:
+  fx: 510.0
+  fy: 510.0
+  cx: 320.2
+  cy: 208.9
+wrist_to_camera_guess:
+  x: 0.015
+  y: 0.0
+  z: 0.15
+  qx: 0.0
+  qy: 0.0
+  qz: -0.7071
+  qw: 0.7071
+base_to_target_guess:
+  x: 1.0
+  y: 0.0
+  z: 0.0
+  qx: 0.0
+  qy: 0.0
+  qz: -0.7071
+  qw: 0.7071
+target:
+  rows: 10
+  cols: 10
+  spacing: 0.0254
+target_finder_params:
+  minThreshold: 50
+  maxThreshold: 220
+  nThresholds: 18
+  minRepeatability: 3
+  circleInclusionRadius: 5
+  maxRadiusDiff: 5
+  maxAverageEllipseError: 0.02
+  filterByColor: true
+  circleColor: 0
+  filterByArea: true
+  minArea: 25.0
+  maxArea: 5000.0
+  filterByCircularity: false
+  minCircularity: 0.8
+  maxCircularity: 1000000000 # Set to float max by default
+  filterByInertia: false
+  minInertiaRatio: 0.3
+  maxInertiaRatio: 1000000000 # Set to float max by default
+  filterByConvexity: true
+  minConvexity: 0.95
+  maxConvexity: 1000000000 # Set to float max by default
+
