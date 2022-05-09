@@ -252,18 +252,9 @@ private:
       // Try to find the circle grid in this image:
       rct_image_tools::TargetFeatures target_features;
       try {
-          std::cout << "image " << i << std::endl;
         target_features = target_finder.findTargetFeatures(image_set[i]);
-//        if (i == 7)
-//        {
-          auto drawn_image2 = target_finder.drawTargetFeatures(image_set[i], target_features);
-          //        cv::circle(drawn_image2, cv::Point(100,100), 5, cv::Scalar(255, 255, 255));
-          //        cv::circle(drawn_image2, cv::Point(200,100), 10, cv::Scalar(255, 0, 255));
-          //        cv::circle(drawn_image2, cv::Point(200,200), 20, cv::Scalar(0, 0, 255));
-          cv::imshow("img",drawn_image2);
-          cv::waitKey();
-          cv::imwrite(debug_filepath + "/imageDrawn" + std::to_string(i) + ".png", drawn_image2);
-//        }
+        auto drawn_image2 = target_finder.drawTargetFeatures(image_set[i], target_features);
+        cv::imwrite(debug_filepath + "/imageDrawn" + std::to_string(i) + ".png", drawn_image2);
       } catch (const std::exception & ex) {
         std::cerr << "Unable to find the circle grid in image: " << i << "\n";
         continue;
