@@ -30,6 +30,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <opencv2/highgui.hpp>
 #include <sys/stat.h>
+#include <rct_optimizations/validation/homography_validation.h>
 
 using namespace rct_common;
 
@@ -137,6 +138,36 @@ rct_image_tools::CircleDetectorParams loadTargetFinderParams(const YAML::Node ta
 
   return target_finder_params;
 }
+
+void printResults(const rct_optimizations::ExtrinsicHandEyeResult& result, const std::string& unit)
+{
+  std::stringstream ss;
+  ss << "\nResult " << (result.converged ? "did" : "did not") << " converge.\n";
+  ss << "Initial cost/observation: " << std::sqrt(result.initial_cost_per_obs) << " (" << unit << ")\n";
+  ss << "Final cost/obseration: " << std::sqrt(result.final_cost_per_obs) << " (" << unit << ")\n";
+  Eigen::Vector3d tol(result.covariance.standard_deviations[0].value, result.covariance.standard_deviations[1].value,
+                      result.covariance.standard_deviations[2].value);
+  ss << "95% position uncertainty band (m): +/- " << 2 * tol.norm() << "\n";
+  Eigen::Quaterniond q = Eigen::AngleAxisd(result.covariance.standard_deviations[3].value, Eigen::Vector3d::UnitX()) *
+                         Eigen::AngleAxisd(result.covariance.standard_deviations[4].value, Eigen::Vector3d::UnitY()) *
+                         Eigen::AngleAxisd(result.covariance.standard_deviations[5].value, Eigen::Vector3d::UnitZ());
+  double qd = q.angularDistance(Eigen::Quaterniond::Identity());
+  ss << "95% orientation uncertainty (rad): +/- " << 2 * qd << " (multiply by distance to part to get translation)\n";
+  ss << "95% combined positional uncertainty band at 3m distance (m): +/- " << 2 * (tol.norm() + qd * 3.0) << "\n";
+
+  // Print the uncertainty
+  ss << "\nUncertainty (standard deviation)\n";
+  for (auto std_dev : result.covariance.standard_deviations)
+  {
+    ss << std_dev.toString() << "\n";
+  }
+
+  // Print the correlation coefficients
+  ss << result.covariance.printCorrelationCoeffAboveThreshold(0.5);
+
+  std::cout << ss.str() << std::endl;
+}
+
 
 static const std::string CONFIG_FILE_PARAMETER = "config_filepath";
 static const std::string DATA_FILE_PARAMETER = "data_filepath";
@@ -253,10 +284,15 @@ private:
       rct_image_tools::TargetFeatures target_features;
       try {
         target_features = target_finder.findTargetFeatures(image_set[i]);
+        rct_optimizations::Correspondence2D3D::Set correspondences = target_finder.target().createCorrespondences(target_features);
+        rct_optimizations::RandomCorrespondenceSampler random_sampler(correspondences.size(), correspondences.size() / 2);
+        Eigen::VectorXd homography_error = rct_optimizations::calculateHomographyError(correspondences, random_sampler);
+        double mean_error = homography_error.array().mean();
+        std::cout << " Mean error for image " << i << " is " << mean_error << std::endl;
         auto drawn_image2 = target_finder.drawTargetFeatures(image_set[i], target_features);
         cv::imwrite(debug_filepath + "/imageDrawn" + std::to_string(i) + ".png", drawn_image2);
       } catch (const std::exception & ex) {
-        std::cerr << "Unable to find the circle grid in image: " << i << "\n";
+        std::cerr << "Unable to find the circle grid in image: " << i << ": " << ex.what() << "\n";
         continue;
       }
 
@@ -279,6 +315,7 @@ private:
 
     // Step 4: You defined a problem, let the tools solve it! Call 'optimize()'.
     rct_optimizations::ExtrinsicHandEyeResult opt_result = rct_optimizations::optimize(problem_def);
+    printResults(opt_result, "pixels");
 
     // Step 5: Do something with your results. Here I just print the results, but you might want to
     // update a data structure, save to a file, push to a mutable joint or mutable state publisher in
