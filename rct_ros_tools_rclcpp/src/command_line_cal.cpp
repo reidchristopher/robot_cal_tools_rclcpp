@@ -24,10 +24,10 @@ public:
     buffer_(clock_),
     listener_(buffer_)
   {
-    this->declare_parameter("base_frame");
-    this->declare_parameter("tool_frame");
-    this->declare_parameter("image_topic");
-    this->declare_parameter("save_dir");
+    this->declare_parameter<std::string>("base_frame");
+    this->declare_parameter<std::string>("tool_frame");
+    this->declare_parameter<std::string>("image_topic");
+    this->declare_parameter<std::string>("save_dir");
 
     if (!this->get_parameter("base_frame", base_frame_)) {
       throw(std::runtime_error("Couldn't load parameter"));

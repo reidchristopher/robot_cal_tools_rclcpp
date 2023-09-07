@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(rct_ros_tools_rclcpp)
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -104,6 +104,8 @@ target_link_libraries(${PROJECT_NAME}_cmd
  ${cv_bridge_LIBRARIES}
  ${image_transport_LIBRARIES}
 )
+
+ament_target_dependencies(${PROJECT_NAME}_cmd tf2_geometry_msgs cv_bridge image_transport)
 
 add_executable(${PROJECT_NAME}_wrist_cal_node  src/camera_on_wrist_node.cpp)
 
